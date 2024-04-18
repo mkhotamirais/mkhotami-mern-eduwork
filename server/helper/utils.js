@@ -1,7 +1,8 @@
 const { hashSync, genSaltSync, compareSync } = require("bcrypt");
 const multer = require("multer");
 const { join } = require("path");
-const { rootPath } = require("../config/constants");
+const { rootPath, ats, rts } = require("../config/constants");
+const jwt = require("jsonwebtoken");
 
 const ok = (res, status, message, data, fields = {}) => {
   res.status(status).json({ message, data, fields });
@@ -18,11 +19,16 @@ const hashPass = (pass) => {
   return hash;
 };
 
-const comparePass = (pass, data) => {
-  const result = compareSync(pass, data?.password);
+const comparePass = (pass, hashPass) => {
+  const result = compareSync(pass, hashPass);
   return result;
 };
 
 const upload = multer({ dest: join(rootPath, "public/images") }).single("image");
 
-module.exports = { ok, err, hashPass, comparePass, upload };
+const jwtSign = (data, type) => {
+  if (type == "access") return jwt.sign(data, ats, { expiresIn: "1d" });
+  else if (type == "refresh") return jwt.sign(data, rts, { expiresIn: "7d" });
+};
+
+module.exports = { ok, err, hashPass, comparePass, upload, jwtSign };

@@ -13,6 +13,7 @@ app.get("/", (req, res) => {
   res.send("halo");
 });
 
+app.use("/api/mkhotami-eduwork/auth", require("./routes/authRoute"));
 app.use("/api/mkhotami-eduwork/user", require("./routes/userRoute"));
 app.use("/api/mkhotami-eduwork/category", require("./routes/categoryRoute"));
 app.use("/api/mkhotami-eduwork/tag", require("./routes/tagRoute"));
