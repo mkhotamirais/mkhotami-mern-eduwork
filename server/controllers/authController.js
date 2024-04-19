@@ -1,4 +1,4 @@
-const { err, ok, hashPass, comparePass, jwtSign } = require("../helper/utils");
+const { err, ok, hashPass, comparePass, jwtSign, saveCookie } = require("../helper/utils");
 const User = require("../models/userModel");
 
 const signup = async (req, res) => {
@@ -22,7 +22,8 @@ const signin = async (req, res) => {
     if (!match) return err(res, 400, `username tidak ditemukan`);
     const matchPass = comparePass(password, match.password);
     if (!matchPass) return err(res, 400, `password salah`);
-    const accessToken = jwtSign({ id: match?._id, username }, "access");
+    const accessToken = jwtSign({ id: match?._id, username, role: match?.role }, "access");
+    saveCookie(res, "accessToken", accessToken);
     await User.findByIdAndUpdate(match?._id, { $push: { token: accessToken } });
     ok(res, 200, `signin ${match?.username} success`, accessToken);
   } catch (error) {
@@ -41,7 +42,8 @@ const signout = async (req, res) => {
 
 const getMe = async (req, res) => {
   try {
-    const data = await User.findById(req.userData.id).select(["-__v", "-password", "-token"]);
+    // const data = await User.findById(req.userData.id).select(["-__v", "-password", "-token"]);
+    const data = await User.findOne({ token: { $in: req.token } }).select(["-__v", "-password", "-token"]);
     ok(res, 200, `getMe`, data);
   } catch (error) {
     err(res, 400, error);

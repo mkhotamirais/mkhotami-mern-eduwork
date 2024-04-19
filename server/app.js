@@ -4,10 +4,17 @@ const app = express();
 const { log } = require("console");
 const db = require("./config");
 const { join } = require("path");
+const morgan = require("morgan");
+const cors = require("cors");
+const cookieParser = require("cookie-parser");
+const { corsOptions, credentials } = require("./config/cred");
 
+app.use(credentials);
+app.use(cors(corsOptions));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(express.static(join(rootPath, "public")));
+app.use(cookieParser());
 
 app.get("/", (req, res) => {
   res.send("halo");

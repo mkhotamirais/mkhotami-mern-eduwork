@@ -31,4 +31,15 @@ const jwtSign = (data, type) => {
   else if (type == "refresh") return jwt.sign(data, rts, { expiresIn: "7d" });
 };
 
-module.exports = { ok, err, hashPass, comparePass, upload, jwtSign };
+const saveCookie = (res, name, token) => {
+  res.cookie(`${name}`, token, {
+    httpOnly: true,
+    // secure: "development",
+    // sameSite: "strict",
+    maxAge: 30 * 24 * 60 * 60 * 1000,
+    secure: "auto",
+    sameSite: "None",
+  });
+};
+
+module.exports = { ok, err, hashPass, comparePass, upload, jwtSign, saveCookie };

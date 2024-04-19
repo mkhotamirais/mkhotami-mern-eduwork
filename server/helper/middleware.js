@@ -1,6 +1,7 @@
 const { ats } = require("../config/constants");
 const { err } = require("./utils");
 const jwt = require("jsonwebtoken");
+const User = require("../models/userModel");
 
 const verifyToken = (req, res, next) => {
   const authHeader = req.headers.authorization || req.headers.authorization;
@@ -14,4 +15,10 @@ const verifyToken = (req, res, next) => {
   });
 };
 
-module.exports = { verifyToken };
+const verifyAdmin = async (req, res, next) => {
+  const data = await User.findById(req.userData.id);
+  if (!data) return err(res, 403, `forbidden: hanya admin yang bisa akses`);
+  next();
+};
+
+module.exports = { verifyToken, verifyAdmin };
