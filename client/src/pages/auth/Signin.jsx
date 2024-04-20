@@ -3,15 +3,15 @@ import { Input, Label } from "../../components/Tags";
 import AuthLayout from "./AuthLayout";
 import { useSigninMutation } from "../../app/api/authApiSlice";
 import toast from "react-hot-toast";
-import { setToken } from "../../app/features/authSlice";
-import { useDispatch } from "react-redux";
+// import { setToken, setUserData } from "../../app/features/authSlice";
+// import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 
 const Signin = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [login, { isLoading }] = useSigninMutation();
-  const dispatch = useDispatch();
+  // const dispatch = useDispatch();
   const navigate = useNavigate();
 
   const handleSubmit = (e) => {
@@ -20,7 +20,8 @@ const Signin = () => {
       .unwrap()
       .then((res) => {
         toast.success(res.message);
-        dispatch(setToken(res.data));
+        // dispatch(setToken(res.data));
+        // dispatch(setUserData(res.data));
         navigate("/");
       })
       .catch((err) => {
@@ -30,7 +31,13 @@ const Signin = () => {
   return (
     <AuthLayout onSubmit={handleSubmit} title="login" isLoading={isLoading}>
       <Label id="username">username</Label>
-      <Input id="username" placeholder="username" value={username} onChange={(e) => setUsername(e.target.value)} />
+      <Input
+        id="username"
+        autoFocus={"on"}
+        placeholder="username"
+        value={username}
+        onChange={(e) => setUsername(e.target.value)}
+      />
       <Label id="password">password</Label>
       <Input
         type="password"

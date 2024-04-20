@@ -1,19 +1,29 @@
+import { useSelector } from "react-redux";
 import { Logo } from "./Components";
 import { BtnAuth, DarkMode, SourceCode } from "./NavRight";
+import { NavBtn, NavCollapse, NavMain } from "./NavMenu";
 
 const Header = () => {
+  const { dark } = useSelector((state) => state.basic);
+
   return (
-    <header className="z-50 h-16 sticky top-0 px-3 lg:px-16 border-b">
-      <div className="flex items-center h-full justify-between">
-        <Logo />
-        <div>nav</div>
-        <div className="flex gap-3 text-xl">
-          <DarkMode />
-          <SourceCode />
-          <BtnAuth />
+    <>
+      <header className={`${dark ? "bg-slate-800" : "bg-white"} shadow z-50 h-16 sticky top-0 px-3 lg:px-16 border-b`}>
+        <div className="flex gap-2 items-center h-full justify-between">
+          <div className="flex gap-4 items-center text-xl">
+            <NavBtn />
+            <Logo />
+          </div>
+          <NavMain />
+          <div className="flex gap-3 text-xl">
+            <DarkMode />
+            <SourceCode />
+            <BtnAuth />
+          </div>
         </div>
-      </div>
-    </header>
+      </header>
+      <NavCollapse />
+    </>
   );
 };
 

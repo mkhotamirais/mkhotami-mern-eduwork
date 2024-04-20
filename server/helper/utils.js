@@ -31,15 +31,19 @@ const jwtSign = (data, type) => {
   else if (type == "refresh") return jwt.sign(data, rts, { expiresIn: "7d" });
 };
 
-const saveCookie = (res, name, token) => {
+const setCookie = (res, name, token) => {
   res.cookie(`${name}`, token, {
     httpOnly: true,
-    // secure: "development",
-    // sameSite: "strict",
+    secure: "development",
+    sameSite: "strict",
     maxAge: 30 * 24 * 60 * 60 * 1000,
-    secure: "auto",
-    sameSite: "None",
+    // sameSite: "None",
+    // secure: "auto",
   });
 };
 
-module.exports = { ok, err, hashPass, comparePass, upload, jwtSign, saveCookie };
+const removeCookie = (res, name) => {
+  res.clearCookie(`${name}`, { httpOnly: true, sameSite: "None", secure: "auto" });
+};
+
+module.exports = { ok, err, hashPass, comparePass, upload, jwtSign, setCookie, removeCookie };

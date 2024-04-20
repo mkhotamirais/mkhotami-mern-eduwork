@@ -1,40 +1,36 @@
 import { useState } from "react";
-import {
-  useDeleteCategoryMutation,
-  useGetCategoriesQuery,
-  useUpdateCategoryMutation,
-} from "../../../app/api/categoryApiSlice";
 import { H2 } from "../../../components/Tags";
 import { CloseModalBtn, ConfirmModalDel, Err, Loading, Modal } from "../../../components/Components";
 import toast from "react-hot-toast";
 import { FaCheck, FaPenToSquare, FaTrashCan, FaXmark } from "react-icons/fa6";
-import AdmCategoryPost from "./AdmCategoryPost";
+import AdmTagPost from "./AdmTagPost";
+import { useDeleteTagMutation, useGetTagsQuery, useUpdateTagMutation } from "../../../app/api/tagApiSlice";
 
-const AdmCategory = () => {
-  const { data, isLoading, isSuccess, isError, error } = useGetCategoriesQuery();
+const AdmTag = () => {
+  const { data, isLoading, isSuccess, isError, error } = useGetTagsQuery();
   const [isEdit, setIsEdit] = useState(null);
 
   let content;
   if (isLoading) content = <Loading />;
   else if (isError) content = <Err>{error}</Err>;
   else if (isSuccess) {
-    content = data.map((item) => <CategoryItem key={item?._id} item={item} isEdit={isEdit} setIsEdit={setIsEdit} />);
+    content = data.map((item) => <TagItem key={item?._id} item={item} isEdit={isEdit} setIsEdit={setIsEdit} />);
   }
 
   return (
     <>
-      <H2>Category List</H2>
-      <AdmCategoryPost />
+      <H2>Tag List</H2>
+      <AdmTagPost />
       <div className="rounded flex flex-col gap-1 md:w-1/2">{content}</div>
     </>
   );
 };
-export default AdmCategory;
+export default AdmTag;
 
-const CategoryItem = ({ item, isEdit, setIsEdit }) => {
+const TagItem = ({ item, isEdit, setIsEdit }) => {
   const [openModalDelete, setOpenModalDelete] = useState(null);
   const [name, setName] = useState(item?.name);
-  const [updateCategory] = useUpdateCategoryMutation();
+  const [updateTag] = useUpdateTagMutation();
 
   const onClose = () => {
     setOpenModalDelete(null);
@@ -42,7 +38,7 @@ const CategoryItem = ({ item, isEdit, setIsEdit }) => {
 
   const handleEdit = (e) => {
     e.preventDefault();
-    updateCategory({ id: item?._id, name })
+    updateTag({ id: item?._id, name })
       .unwrap()
       .then((res) => {
         toast.success(res.message);
@@ -88,18 +84,18 @@ const CategoryItem = ({ item, isEdit, setIsEdit }) => {
             </button>
           </>
         )}
-        {openModalDelete === item?._id && <CategoryModalDelete item={item} onClose={onClose} />}
+        {openModalDelete === item?._id && <TagModalDelete item={item} onClose={onClose} />}
       </div>
     </div>
   );
 };
-CategoryItem.propTypes;
+TagItem.propTypes;
 
-const CategoryModalDelete = ({ onClose, item }) => {
-  const [deleteCategory] = useDeleteCategoryMutation();
+const TagModalDelete = ({ onClose, item }) => {
+  const [deleteTag] = useDeleteTagMutation();
   const handleDelete = (e) => {
     e.preventDefault();
-    deleteCategory(item?._id)
+    deleteTag(item?._id)
       .unwrap()
       .then((res) => {
         toast.success(res.message);
@@ -116,4 +112,4 @@ const CategoryModalDelete = ({ onClose, item }) => {
     </Modal>
   );
 };
-CategoryModalDelete.propTypes;
+TagModalDelete.propTypes;

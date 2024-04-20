@@ -3,15 +3,16 @@ import Footer from "./components/Footer";
 import Header from "./components/Header";
 import { Outlet } from "react-router-dom";
 import { Toaster } from "react-hot-toast";
-import { removeOpenAdminMenu, removeOpenUserMenu } from "./app/features/basicSlice";
+import { removeOpenAdminMenu, removeOpenNav, removeOpenUserMenu } from "./app/features/basicSlice";
 
 const App = () => {
-  const { dark, openAdminMenu, openUserMenu } = useSelector((state) => state.basic);
+  const { dark, openAdminMenu, openUserMenu, openNav } = useSelector((state) => state.basic);
   const dispatch = useDispatch();
 
   const handleMain = () => {
     if (openAdminMenu) dispatch(removeOpenAdminMenu());
     if (openUserMenu) dispatch(removeOpenUserMenu());
+    if (openNav) dispatch(removeOpenNav());
   };
 
   return (

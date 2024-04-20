@@ -1,16 +1,14 @@
-import { useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
 import { Navigate, Outlet } from "react-router-dom";
-import { setUserData } from "../../app/features/authSlice";
+import { useGetMeQuery } from "../../app/api/authApiSlice";
 
 const AuthRedirect = () => {
-  const { token, userData } = useSelector((state) => state.auth);
-  const dispatch = useDispatch();
-  useEffect(() => {
-    dispatch(setUserData(token));
-  }, [dispatch, token]);
+  const { data } = useGetMeQuery();
 
-  return userData?.username ? <Navigate to="/" replace /> : <Outlet />;
+  if (!data?.role) {
+    return <Outlet />;
+  } else if (data?.role) {
+    return <Navigate to="/" replace />;
+  }
 };
 
 export default AuthRedirect;

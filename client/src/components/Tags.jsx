@@ -1,3 +1,5 @@
+import { useSelector } from "react-redux";
+
 export const Section = ({ children = "Section", id, className }) => (
   <section id={id} className={`${className} px-3 py-2 lg:px-16`}>
     {children}
@@ -71,3 +73,13 @@ export const Select = ({ children, className, id, value, onChange }) => {
   );
 };
 Select.propTypes;
+
+export const Figure = ({ src, alt, height = "h-32 sm:h-48" }) => {
+  const { dark } = useSelector((state) => state.basic);
+  return (
+    <figure className={`${dark ? "bg-slate-700" : "bg-slate-100"} ${height} rounded overflow-hidden`}>
+      <img src={src} alt={alt} className="h-full w-full object-contain object-center" />
+    </figure>
+  );
+};
+Figure.propTypes;

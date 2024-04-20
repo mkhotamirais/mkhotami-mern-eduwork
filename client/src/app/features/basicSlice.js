@@ -6,6 +6,7 @@ const basicSlice = createSlice({
     dark: JSON.parse(localStorage.getItem(`mernEduworkDark`)) || false,
     openAdminMenu: false,
     openUserMenu: false,
+    openNav: false,
   },
   reducers: {
     toggleDark(state) {
@@ -28,10 +29,29 @@ const basicSlice = createSlice({
     removeOpenUserMenu(state) {
       state.openUserMenu = false;
     },
+    removeOpenAuthMenu(state) {
+      state.openUserMenu = false;
+      state.openAdminMenu = false;
+    },
+    toggleOpenNav(state) {
+      state.openNav = !state.openNav;
+    },
+    removeOpenNav(state) {
+      state.openNav = false;
+    },
   },
 });
 
-export const { toggleDark, removeDark, toggleOpenAdminMenu, removeOpenAdminMenu, toggleOpenUserMenu, removeOpenUserMenu } =
-  basicSlice.actions;
+export const {
+  toggleDark,
+  removeDark,
+  toggleOpenAdminMenu,
+  removeOpenAdminMenu,
+  toggleOpenUserMenu,
+  removeOpenUserMenu,
+  removeOpenAuthMenu,
+  toggleOpenNav,
+  removeOpenNav,
+} = basicSlice.actions;
 
 export default basicSlice.reducer;

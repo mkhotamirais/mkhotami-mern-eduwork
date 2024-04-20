@@ -3,16 +3,14 @@ import { useGetMeQuery } from "../../app/api/authApiSlice";
 import { Breadcrumb } from "../../components/Components";
 import { Section } from "../../components/Tags";
 
-const ProtectedAdmin = () => {
+const ProtectedMe = () => {
   const { data } = useGetMeQuery();
 
-  if (data?.role === "admin") {
+  if (data?.role === "user") {
     return (
       <Section>
         <Breadcrumb />
-        <div className="mt-2">
-          <Outlet />
-        </div>
+        <Outlet />
       </Section>
     );
   } else if (data?.role === "" || data?.role === null) {
@@ -20,4 +18,4 @@ const ProtectedAdmin = () => {
   }
 };
 
-export default ProtectedAdmin;
+export default ProtectedMe;

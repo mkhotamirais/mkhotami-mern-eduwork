@@ -7,6 +7,7 @@ export const authApiSlice = apiSlice.injectEndpoints({
     }),
     signin: builder.mutation({
       query: (body) => ({ url: `/auth/signin`, method: "PATCH", body }),
+      invalidatesTags: ["User"],
     }),
     signout: builder.mutation({
       query: () => ({ url: `/auth/signout`, method: "PATCH" }),

@@ -16,8 +16,8 @@ let userSchema = mongoose.Schema(
     },
     password: {
       type: String,
-      required: [true, "email harus diisi"],
-      minLength: [5, "Panjang password minimal 6 huruf"],
+      required: [true, "password harus diisi"],
+      minLength: [5, "Panjang password minimal 5 huruf"],
     },
     role: {
       type: String,

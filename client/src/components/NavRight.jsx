@@ -10,6 +10,7 @@ import {
   FaCartShopping,
   FaUsersGear,
   FaList,
+  FaUserGear,
 } from "react-icons/fa6";
 import { useDispatch, useSelector } from "react-redux";
 import {
@@ -22,15 +23,17 @@ import {
 import { Link } from "react-router-dom";
 import { useGetMeQuery, useSignoutMutation } from "../app/api/authApiSlice";
 import toast from "react-hot-toast";
-import { removeToken, setUserData } from "../app/features/authSlice";
-import { useEffect } from "react";
+import { useActivepath } from "./Hooks";
 
 const adminMenu = [
-  { to: "adm-product", text: "product", icon: <FaCartShopping /> },
-  { to: "adm-user", text: "user", icon: <FaUsersGear /> },
-  { to: "adm-category", text: "category", icon: <FaList /> },
-  { to: "adm-tags", text: "tags", icon: <FaTags /> },
+  { to: "/dash", text: "adm-profile", icon: <FaUserGear /> },
+  { to: "/dash/adm-product", text: "adm-product", icon: <FaCartShopping /> },
+  { to: "/dash/adm-user", text: "adm-user", icon: <FaUsersGear /> },
+  { to: "/dash/adm-category", text: "adm-category", icon: <FaList /> },
+  { to: "/dash/adm-tag", text: "adm-tag", icon: <FaTags /> },
 ];
+
+const userMenu = [{ to: "/me", text: "profile", icon: <FaUserGear /> }];
 
 export const SourceCode = () => {
   return (
@@ -56,10 +59,6 @@ export const BtnAuth = () => {
   const { openAdminMenu, openUserMenu } = useSelector((state) => state.basic);
   const dispatch = useDispatch();
   const { data } = useGetMeQuery();
-
-  // useEffect(() => {
-  //   dispatch(setUserData(token));
-  // }, [dispatch, token]);
 
   const btnAuthAdmin = (
     <div className="relative flex">
@@ -90,7 +89,6 @@ export const BtnAuth = () => {
     if (data?.role == "admin") content = btnAuthAdmin;
     else if (data?.role == "user") content = btnAuthUser;
   } else content = btnSignin;
-
   return content;
 };
 
@@ -109,6 +107,8 @@ export const AuthBtnBox = ({ children }) => {
 AuthBtnBox.propTypes;
 
 export const AuthBtnMenu = ({ item }) => {
+  const [active] = useActivepath();
+
   const dispatch = useDispatch();
   const { openAdminMenu, openUserMenu } = useSelector((state) => state.basic);
 
@@ -120,17 +120,26 @@ export const AuthBtnMenu = ({ item }) => {
   return (
     <Link
       onClick={handleClick}
-      to={item.to}
-      className="hover:text-cyan-600 text-left border-b rounded p-2 flex gap-2 items-center"
+      to={`${item.to}`}
+      className={`${
+        active === item.text ? "text-cyan-500" : ""
+      } hover:text-cyan-600 text-left border-b rounded p-2 flex gap-2 items-center`}
     >
-      {item.icon} {item.text}
+      {item.icon} {item.text.split("-")[1]}
     </Link>
   );
 };
 AuthBtnMenu.propTypes;
 
 export const AuthUser = () => {
-  return <div>auth user</div>;
+  return (
+    <AuthBtnBox>
+      {userMenu.map((item, i) => (
+        <AuthBtnMenu key={i} item={item} />
+      ))}
+      <BtnSingout />
+    </AuthBtnBox>
+  );
 };
 
 export const AuthAdmin = () => {
@@ -155,7 +164,7 @@ export const BtnSingout = () => {
       .then((res) => {
         toast.success(res.message);
         dispatch(removeOpenAdminMenu());
-        dispatch(removeToken());
+        window.location.href = "/";
       })
       .catch((err) => {
         toast.error(err.data.message);

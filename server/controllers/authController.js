@@ -1,4 +1,4 @@
-const { err, ok, hashPass, comparePass, jwtSign, saveCookie } = require("../helper/utils");
+const { err, ok, hashPass, comparePass, jwtSign, setCookie, removeCookie } = require("../helper/utils");
 const User = require("../models/userModel");
 
 const signup = async (req, res) => {
@@ -23,7 +23,7 @@ const signin = async (req, res) => {
     const matchPass = comparePass(password, match.password);
     if (!matchPass) return err(res, 400, `password salah`);
     const accessToken = jwtSign({ id: match?._id, username, role: match?.role }, "access");
-    saveCookie(res, "accessToken", accessToken);
+    setCookie(res, "accessToken", accessToken);
     await User.findByIdAndUpdate(match?._id, { $push: { token: accessToken } });
     ok(res, 200, `signin ${match?.username} success`, accessToken);
   } catch (error) {
@@ -34,6 +34,7 @@ const signin = async (req, res) => {
 const signout = async (req, res) => {
   try {
     const data = await User.findByIdAndUpdate(req.userData.id, { $pull: { token: req.token } }, { new: true });
+    removeCookie(res, "accessToken");
     ok(res, 200, `logout ${data?.username} success`);
   } catch (error) {
     err(res, 400, error);
