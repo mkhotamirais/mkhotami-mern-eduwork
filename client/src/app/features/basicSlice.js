@@ -7,6 +7,7 @@ const basicSlice = createSlice({
     openAdminMenu: false,
     openUserMenu: false,
     openNav: false,
+    viewMode: JSON.parse(localStorage.getItem("viewMode")) || "card",
   },
   reducers: {
     toggleDark(state) {
@@ -39,6 +40,9 @@ const basicSlice = createSlice({
     removeOpenNav(state) {
       state.openNav = false;
     },
+    setViewMode(state, action) {
+      state.viewMode = action.payload;
+    },
   },
 });
 
@@ -52,6 +56,7 @@ export const {
   removeOpenAuthMenu,
   toggleOpenNav,
   removeOpenNav,
+  setViewMode,
 } = basicSlice.actions;
 
 export default basicSlice.reducer;

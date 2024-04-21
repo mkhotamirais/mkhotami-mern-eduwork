@@ -1,7 +1,7 @@
 import { useDispatch, useSelector } from "react-redux";
 import Footer from "./components/Footer";
 import Header from "./components/Header";
-import { Outlet } from "react-router-dom";
+import { Outlet, ScrollRestoration } from "react-router-dom";
 import { Toaster } from "react-hot-toast";
 import { removeOpenAdminMenu, removeOpenNav, removeOpenUserMenu } from "./app/features/basicSlice";
 
@@ -23,6 +23,7 @@ const App = () => {
         <Outlet />
       </main>
       <Footer />
+      <ScrollRestoration />
     </div>
   );
 };

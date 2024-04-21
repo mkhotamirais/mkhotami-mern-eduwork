@@ -8,11 +8,11 @@ const { rootPath } = require("../config/constants");
 
 const getProducts = async (req, res) => {
   try {
-    let { skip = 0, limit = 0, q = "", catId = "", tId = [] } = req.query;
+    let { skip = 0, limit = 0, q = "", category = "", tag = [] } = req.query;
     let criteria = {};
     if (q.length) criteria = { ...criteria, name: { $regex: `${q}`, $options: "i" } };
-    if (catId.length) criteria = { ...criteria, category: catId };
-    if (tId.length) criteria = { ...criteria, tag: { $in: tId } };
+    if (category.length) criteria = { ...criteria, category };
+    if (tag.length) criteria = { ...criteria, tags: { $in: tag } };
     const count = await Product.find().countDocuments();
     const countCriteria = await Product.find(criteria).countDocuments();
     const data = await Product.find(criteria)

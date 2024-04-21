@@ -33,7 +33,7 @@ const adminMenu = [
   { to: "/dash/adm-tag", text: "adm-tag", icon: <FaTags /> },
 ];
 
-const userMenu = [{ to: "/me", text: "profile", icon: <FaUserGear /> }];
+const userMenu = [{ to: "/me", text: "adm-profile", icon: <FaUserGear /> }];
 
 export const SourceCode = () => {
   return (

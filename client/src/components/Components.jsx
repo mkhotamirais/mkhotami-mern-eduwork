@@ -129,10 +129,8 @@ export const Actions = ({ className, modalView, modalDelete, id }) => {
 };
 Actions.propTypes;
 
-export const Badge = ({ children = "Badge", className }) => (
-  <span
-    className={`${className} inline text-xs rounded-lg leading-none p-1 bg-slate-500 text-white cursor-pointer hover:bg-cyan-500`}
-  >
+export const Badge = ({ children = "Badge", onClick, className = "bg-gray-500 text-white" }) => (
+  <span onClick={onClick} className={`${className} inline text-xs rounded-lg leading-none p-1`}>
     {children}
   </span>
 );

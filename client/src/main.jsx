@@ -24,6 +24,7 @@ import AdmUserPost from "./pages/admin/adm-user/AdmUserPost.jsx";
 import AdmUserDetail from "./pages/admin/adm-user/AdmUserDetail.jsx";
 import AdmUserUpdate from "./pages/admin/adm-user/AdmUserUpdate.jsx";
 import AdmProductUpdate from "./pages/admin/adm-product/AdmProductUpdate.jsx";
+import ProductDetail from "./pages/product/ProductDetail.jsx";
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -31,6 +32,7 @@ const router = createBrowserRouter(
       <Route index element={<Home />} />
       <Route path="product">
         <Route index element={<Product />} />
+        <Route path="detail/:id" element={<ProductDetail />} />
       </Route>
       <Route element={<AuthRedirect />}>
         <Route path="signin" element={<Signin />} />
