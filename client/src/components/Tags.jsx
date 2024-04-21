@@ -65,9 +65,18 @@ export const Textarea = ({ className, id, value, onChange, placeholder = "textar
 );
 Textarea.propTypes;
 
-export const Select = ({ children, className, id, value, onChange }) => {
+export const Select = ({ children, className, multiple, size, id, value, onChange }) => {
+  const { dark } = useSelector((state) => state.basic);
   return (
-    <select id={id} name={id} value={value} onChange={onChange} className={`${className} border rounded p-2 w-full mb-2`}>
+    <select
+      id={id}
+      name={id}
+      value={value}
+      onChange={onChange}
+      multiple={multiple}
+      size={size}
+      className={`${className} border rounded p-2 w-full mb-2 ${dark ? "bg-slate-800" : "bg-white"}`}
+    >
       {children}
     </select>
   );

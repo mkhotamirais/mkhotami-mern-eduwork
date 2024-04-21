@@ -57,7 +57,7 @@ const updateUser = async (req, res) => {
       req.body.password = hashPass(req.body.password);
     }
     const data = await User.findByIdAndUpdate(id, req.body, { new: true });
-    ok(res, 200, `updateUser`, data);
+    ok(res, 200, `update ${match?.username} success`, data);
   } catch (error) {
     err(res, 400, error);
   }

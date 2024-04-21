@@ -173,11 +173,17 @@ export const Breadcrumb = ({ className }) => {
 };
 Breadcrumb.propTypes;
 
-// let to;
-// if (i === 0) to = "..";
-// else if (p === "detail" || p === "update") to = "#";
-// else
-//   to = location.pathname
-//     .split("/")
-//     .splice(2, path.indexOf(p) - 1)
-//     .join("/");
+export const PreviewImg = ({ onRemovePreview, preview }) => {
+  return (
+    <div className="relative w-48 h-48 my-2 border p-1 rounded overflow-hidden group">
+      <button
+        onClick={onRemovePreview}
+        className="hidden group-hover:flex items-center justify-center bg-[rgba(0,0,0,.5)] p-3 rounded-full absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2"
+      >
+        <FaTrash className="text-red-500 inline-block" />
+      </button>
+      <img src={preview} width={200} alt="image preview" className="object-contain object-center w-full h-full" />
+    </div>
+  );
+};
+PreviewImg.propTypes;

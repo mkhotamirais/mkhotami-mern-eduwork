@@ -5,7 +5,7 @@ import { Figure } from "../../../components/Tags";
 const AdmProductModalView = ({ item, onClose }) => {
   return (
     <Modal id={item?._id} onClick={onClose} className={"flex flex-col gap-2"}>
-      <Figure src={item.imageUrl} alt={item.imageName} height="h-64 sm:h-72" />
+      <Figure src={item.imageUrl} alt={item.imageName || "no image"} height="h-64 sm:h-72" />
       <div className="capitalize font-medium text-base sm:text-lg">{item?.name}</div>
       <div className="text-lg sm:text-2xl">Rp{item?.price?.toLocaleString("id-ID")}</div>
       <div>{item?.description}</div>

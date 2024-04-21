@@ -13,9 +13,13 @@ const AdmProduct = () => {
     console.log(data);
   }, [data]);
 
+  useEffect(() => {
+    console.log(error);
+  }, [error]);
+
   let content;
   if (isLoading) content = <Loading />;
-  else if (isError) content = <Err>{error}</Err>;
+  else if (isError) content = <Err>hr</Err>;
   else if (isSuccess) {
     const renderedProduct = data.map((item) => <AdmProductCard key={item?._id} item={item} />);
     content = <GridCard>{renderedProduct}</GridCard>;

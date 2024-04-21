@@ -1,15 +1,18 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { H2, Input, Label, Textarea } from "../../../components/Tags";
 import { useGetCategoriesQuery } from "../../../app/api/categoryApiSlice";
 import { useGetTagsQuery } from "../../../app/api/tagApiSlice";
-import { usePostProductMutation } from "../../../app/api/productApiSlice";
+import { useGetProductByIdQuery, useUpdateProductMutation } from "../../../app/api/productApiSlice";
 import toast from "react-hot-toast";
 import { Select } from "antd";
 import { useSelector } from "react-redux";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { PreviewImg } from "../../../components/Components";
 
-const AdmProductPost = () => {
+const AdmProductUpdate = () => {
+  const { id } = useParams();
+  const { data: product } = useGetProductByIdQuery(id);
+
   const { dark } = useSelector((state) => state.basic);
   const [name, setName] = useState("");
   const [price, setPrice] = useState("");
@@ -18,6 +21,18 @@ const AdmProductPost = () => {
   const [tag, setTag] = useState([]);
   const [image, setImage] = useState("");
   const [preview, setPreview] = useState("");
+
+  useEffect(() => {
+    if (product) {
+      setName(product?.name);
+      setPrice(product?.price);
+      setCategory(product?.category?._id);
+      setTag(product?.tags.map((t) => t._id));
+      setDescription(product?.description);
+      setImage(product?.imageName);
+      setPreview(product?.imageUrl);
+    }
+  }, [product]);
 
   const onRemovePreview = () => {
     setImage("");
@@ -32,12 +47,13 @@ const AdmProductPost = () => {
 
   const { data: categories } = useGetCategoriesQuery();
   const { data: tags } = useGetTagsQuery();
-  const [postProduct] = usePostProductMutation();
+  const [updateProduct] = useUpdateProductMutation();
   const navigate = useNavigate();
 
   const handleSubmit = (e) => {
     e.preventDefault();
     const data = new FormData();
+    data.append("id", id);
     data.append("name", name);
     data.append("price", price);
     data.append("category", category);
@@ -46,22 +62,20 @@ const AdmProductPost = () => {
     });
     data.append("image", image);
     data.append("description", description);
-    postProduct(data)
+    updateProduct(data)
       .unwrap()
       .then((res) => {
-        console.log(res);
         toast.success(res.message);
         navigate(-1);
       })
       .catch((err) => {
-        console.log(err);
         toast.error(err.data.message);
       });
   };
 
   return (
     <>
-      <H2>Product Post</H2>
+      <H2>Product Update</H2>
       <form onSubmit={handleSubmit}>
         <div className="flex flex-col sm:flex-row sm:gap-2">
           <div className="flex-1">
@@ -78,6 +92,7 @@ const AdmProductPost = () => {
             <Label id="category">category</Label>
             <Select
               size={"large"}
+              value={category}
               placeholder="Select Category"
               onChange={(value) => setCategory(value)}
               className={`${dark ? "bg-slate-800" : "bg-white"} w-full`}
@@ -89,6 +104,7 @@ const AdmProductPost = () => {
             <Select
               mode="multiple"
               size={"large"}
+              value={tag}
               placeholder="Select Tags"
               onChange={(value) => setTag(value)}
               className={`${dark ? "bg-slate-800" : "bg-white"} w-full`}
@@ -109,4 +125,4 @@ const AdmProductPost = () => {
   );
 };
 
-export default AdmProductPost;
+export default AdmProductUpdate;
