@@ -11,6 +11,7 @@ import {
   FaUsersGear,
   FaList,
   FaUserGear,
+  FaAddressBook,
 } from "react-icons/fa6";
 import { useDispatch, useSelector } from "react-redux";
 import {
@@ -33,7 +34,11 @@ const adminMenu = [
   { to: "/dash/adm-tag", text: "adm-tag", icon: <FaTags /> },
 ];
 
-const userMenu = [{ to: "/me", text: "adm-profile", icon: <FaUserGear /> }];
+const userMenu = [
+  { to: "/me", text: "adm-profile", icon: <FaUserGear /> },
+  { to: "/me/cart", text: "adm-cart", icon: <FaCartShopping /> },
+  { to: "/me/address", text: "adm-address", icon: <FaAddressBook /> },
+];
 
 export const SourceCode = () => {
   return (

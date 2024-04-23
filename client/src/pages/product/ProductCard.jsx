@@ -1,15 +1,18 @@
 import { Link } from "react-router-dom";
 import { Figure } from "../../components/Tags";
-import { FaCartPlus, FaCircleExclamation, FaEye } from "react-icons/fa6";
+import { FaCircleExclamation, FaEye } from "react-icons/fa6";
 import { useState } from "react";
 import ProductModalView from "./ProductModalView";
 import { Badge } from "../../components/Components";
+import ProductAddToCart from "./ProductAddToCart";
 
 const ProductCard = ({ item }) => {
   const [openModelView, setOpenModelView] = useState(null);
+
   const onClose = () => {
     if (openModelView) setOpenModelView(null);
   };
+
   return (
     <div className="flex flex-col border rounded p-2 gap-2 relative">
       <Badge className={"absolute right-1 top-1 bg-green-500 text-white bg-opacity-70 rounded-none"}>
@@ -34,9 +37,7 @@ const ProductCard = ({ item }) => {
             <FaCircleExclamation className="text-yellow-500" />
           </Link>
         </div>
-        <button className="border rounded-full p-2 bg-cyan-600 text-white hover:opacity-70">
-          <FaCartPlus />
-        </button>
+        <ProductAddToCart item={item} />
         {openModelView === item?._id && <ProductModalView onClose={onClose} item={item} />}
       </div>
     </div>

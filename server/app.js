@@ -25,6 +25,8 @@ app.use("/api/mkhotami-eduwork/user", require("./routes/userRoute"));
 app.use("/api/mkhotami-eduwork/category", require("./routes/categoryRoute"));
 app.use("/api/mkhotami-eduwork/tag", require("./routes/tagRoute"));
 app.use("/api/mkhotami-eduwork/product", require("./routes/productRoute"));
+app.use("/api/mkhotami-eduwork/cart", require("./routes/cartRoute"));
+app.use("/api/mkhotami-eduwork/address", require("./routes/addressRoute"));
 
 db.then(() => {
   log(`connect to mongodb`);

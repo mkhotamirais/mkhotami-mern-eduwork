@@ -25,6 +25,8 @@ import AdmUserDetail from "./pages/admin/adm-user/AdmUserDetail.jsx";
 import AdmUserUpdate from "./pages/admin/adm-user/AdmUserUpdate.jsx";
 import AdmProductUpdate from "./pages/admin/adm-product/AdmProductUpdate.jsx";
 import ProductDetail from "./pages/product/ProductDetail.jsx";
+import Cart from "./pages/me/Cart.jsx";
+import Address from "./pages/me/Address.jsx";
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -34,12 +36,14 @@ const router = createBrowserRouter(
         <Route index element={<Product />} />
         <Route path="detail/:id" element={<ProductDetail />} />
       </Route>
+      <Route path="me" element={<ProtectedMe />}>
+        <Route index element={<Profile />} />
+        <Route path="cart" element={<Cart />} />
+        <Route path="address" element={<Address />} />
+      </Route>
       <Route element={<AuthRedirect />}>
         <Route path="signin" element={<Signin />} />
         <Route path="signup" element={<Signup />} />
-      </Route>
-      <Route path="me" element={<ProtectedMe />}>
-        <Route index element={<Profile />} />
       </Route>
       <Route path="dash" element={<ProtectedAdmin />}>
         <Route index element={<Profile />} />

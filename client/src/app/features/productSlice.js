@@ -8,6 +8,7 @@ const productSlice = createSlice({
     queryTag: [],
     queryTagString: "",
     queryResult: "",
+    cartIds: [],
   },
   reducers: {
     setQueryObject(state, action) {
@@ -25,6 +26,13 @@ const productSlice = createSlice({
     },
     setQueryResult(state) {
       state.queryResult = state.queryObjectString + state.queryTagString;
+    },
+    addCartIds(state) {
+      // if(state.cartIds.includes(action.payload)) state.cartIds.push(action.payload)
+      state.cartIds = "addCartIds";
+    },
+    removeCartIds(state) {
+      state.cartIds = "removeCartIds";
     },
   },
 });

@@ -46,7 +46,7 @@ const Product = () => {
   return (
     <Section>
       <div className="flex flex-col">
-        <div className="flex items-center gap-2">
+        <div className="flex items-center justify-between gap-2">
           <ProductQuerySearch />
           <ProductQueryCategory />
         </div>

@@ -14,7 +14,7 @@ const ProductQuerySearch = () => {
   };
 
   return (
-    <form onSubmit={handleSearch} className="flex w-full sm:w-72 lg:w-[28rem] mx-auto">
+    <form onSubmit={handleSearch} className="flex w-full sm:w-72 lg:w-[28rem]">
       <input
         type="search"
         value={q}

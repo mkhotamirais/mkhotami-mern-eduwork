@@ -17,8 +17,8 @@ const ProductQueryCategory = () => {
     <div>
       <ConfigProvider
         theme={{
-          components: dark && {
-            Select: {
+          components: {
+            Select: dark && {
               colorBgContainer: "#334155",
               colorText: "lightgray",
               colorBgElevated: "#334155",
@@ -30,7 +30,6 @@ const ProductQueryCategory = () => {
         <Select
           size={"large"}
           placeholder="Filter Category"
-          def
           onChange={handleChange}
           className={`w-32`}
           options={
