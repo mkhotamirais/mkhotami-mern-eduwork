@@ -25,6 +25,7 @@ import { Link } from "react-router-dom";
 import { useGetMeQuery, useSignoutMutation } from "../app/api/authApiSlice";
 import toast from "react-hot-toast";
 import { useActivepath } from "./Hooks";
+import CartCount from "../pages/me/CartCount";
 
 const adminMenu = [
   { to: "/dash", text: "adm-profile", icon: <FaUserGear /> },
@@ -32,11 +33,11 @@ const adminMenu = [
   { to: "/dash/adm-user", text: "adm-user", icon: <FaUsersGear /> },
   { to: "/dash/adm-category", text: "adm-category", icon: <FaList /> },
   { to: "/dash/adm-tag", text: "adm-tag", icon: <FaTags /> },
+  { to: "/dash/adm-address", text: "adm-address", icon: <FaAddressBook /> },
 ];
 
 const userMenu = [
   { to: "/me", text: "adm-profile", icon: <FaUserGear /> },
-  { to: "/me/cart", text: "adm-cart", icon: <FaCartShopping /> },
   { to: "/me/address", text: "adm-address", icon: <FaAddressBook /> },
 ];
 
@@ -57,6 +58,15 @@ export const DarkMode = () => {
       <FaMoon className={`${dark ? "-translate-y-full" : "translate-y-0"} transition-all duration-150`} />
       <FaSun className={`${dark ? "-translate-y-full" : "translate-y-0"} transition-all duration-150`} />
     </button>
+  );
+};
+
+export const BtnCart = () => {
+  return (
+    <Link to="/me/cart" className="relative">
+      <CartCount />
+      <FaCartShopping />
+    </Link>
   );
 };
 

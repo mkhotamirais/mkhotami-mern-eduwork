@@ -138,6 +138,7 @@ Badge.propTypes;
 
 export const Breadcrumb = ({ className }) => {
   const [path] = usePath();
+  path[0] = "home";
 
   return (
     <div className={`${className} py-1 text-sm border-b overflow-x-scroll`}>
@@ -147,23 +148,18 @@ export const Breadcrumb = ({ className }) => {
           <Next />
         </div>
         <div className="flex">
-          {path.map((item, i) => (
-            <Link
-              to={
-                item === "detail" || item === "update"
-                  ? "#"
-                  : location.pathname
-                      .split("/")
-                      .splice(2, path.indexOf(item) - 1)
-                      .join("/")
-              }
-              key={i}
-              className=""
-            >
-              <div className="inline px-1 hover:text-cyan-500 hover:underline">{item}</div>
-              {i < path.length - 1 && "/"}
-            </Link>
-          ))}
+          {path.map((item, i) => {
+            let to;
+            if (i === 0) to = "..";
+            else if (item === "detail" || item === "update") to = "#";
+            else to = "/" + location.pathname.split("/").splice(1, path.indexOf(item)).join("/");
+            return (
+              <Link to={to} key={i} className="">
+                <div className="inline px-1 hover:text-cyan-500 hover:underline">{item}</div>
+                {i < path.length - 1 && "/"}
+              </Link>
+            );
+          })}
         </div>
       </div>
     </div>

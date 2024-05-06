@@ -1,6 +1,6 @@
 import { useSelector } from "react-redux";
 import { Logo } from "./Components";
-import { BtnAuth, DarkMode, SourceCode } from "./NavRight";
+import { BtnAuth, BtnCart, DarkMode, SourceCode } from "./NavRight";
 import { NavBtn, NavCollapse, NavMain } from "./NavMenu";
 
 const Header = () => {
@@ -18,6 +18,7 @@ const Header = () => {
           <div className="flex gap-3 text-xl">
             <DarkMode />
             <SourceCode />
+            <BtnCart />
             <BtnAuth />
           </div>
         </div>

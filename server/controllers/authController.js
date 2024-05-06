@@ -53,11 +53,12 @@ const getMe = async (req, res) => {
 
 const updateMe = async (req, res) => {
   try {
+    const match = await User.findById(req.userData.id);
     if (req.body.password) {
       if (req.body.password !== req.body.confPassword) return err(res, 400, `konfirmasi passwor salah`);
       req.body.pasword = hashPass(req.body.password);
     }
-    if (req.body.role !== "user") return err(res, 400, `hanya admin yang bisa mengganti role`);
+    if (match.role === "user") req.body.role = "user";
     const data = await User.findByIdAndUpdate(req.userData.id, req.body, { new: true });
     ok(res, 200, `update ${req.userData?.username} success`, data);
   } catch (error) {
@@ -67,6 +68,7 @@ const updateMe = async (req, res) => {
 
 const deleteMe = async (req, res) => {
   try {
+    if (req.userData.role === "admin") return err(res, 400, `role admin tidak bisa dihapus, ubah dulu rolenya`);
     await User.findByIdAndDelete(req.userData.id);
     ok(res, 200, `akun anda berhasil dihapus`);
   } catch (error) {

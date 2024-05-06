@@ -5,7 +5,7 @@ const validator = require("validator");
 const getUsers = async (req, res) => {
   try {
     const count = await User.find().countDocuments();
-    const data = await User.find().sort({ createdAt: -1 }).select(["-__v", "-password"]);
+    const data = await User.find().sort("role -createdAt").select(["-__v", "-password"]);
     ok(res, 200, `getUsers`, data, { count });
   } catch (error) {
     err(res, 400, error);

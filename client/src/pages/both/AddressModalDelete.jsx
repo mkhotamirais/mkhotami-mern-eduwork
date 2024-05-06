@@ -1,16 +1,16 @@
+import { CloseModalBtn, ConfirmModalDel, Modal } from "../../components/Components";
 import toast from "react-hot-toast";
-import { useDeleteUserMutation } from "../../../app/api/userApiSlice";
-import { CloseModalBtn, ConfirmModalDel, Modal } from "../../../components/Components";
+import { useDeleteAddressMutation } from "../../app/api/addressApiSlice";
 
-const AdmUserModalDelete = ({ onClose, item }) => {
-  const [deleteUser] = useDeleteUserMutation();
-
+const AddressModalDelete = ({ onClose, item }) => {
+  const [deleteAddress] = useDeleteAddressMutation();
   const handleDelete = (e) => {
     e.preventDefault();
-    deleteUser(item?._id)
+    deleteAddress(item?._id)
       .unwrap()
       .then((res) => {
         toast.success(res.message);
+        onClose();
       })
       .catch((err) => {
         toast.error(err.data.message);
@@ -24,6 +24,6 @@ const AdmUserModalDelete = ({ onClose, item }) => {
     </Modal>
   );
 };
-AdmUserModalDelete.propTypes;
+AddressModalDelete.propTypes;
 
-export default AdmUserModalDelete;
+export default AddressModalDelete;

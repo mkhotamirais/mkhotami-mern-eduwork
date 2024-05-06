@@ -16,7 +16,6 @@ import AdmCategory from "./pages/admin/adm-category/AdmCategory.jsx";
 import AdmUser from "./pages/admin/adm-user/AdmUser.jsx";
 import Product from "./pages/product/Product.jsx";
 import AdmProductDetail from "./pages/admin/adm-product/AdmProductDetail.jsx";
-import Profile from "./pages/Profile.jsx";
 import ProtectedMe from "./pages/me/ProtectedMe.jsx";
 import AdmProductPost from "./pages/admin/adm-product/AdmProductPost.jsx";
 import AdmTag from "./pages/admin/adm-tag/AdmTag.jsx";
@@ -26,7 +25,9 @@ import AdmUserUpdate from "./pages/admin/adm-user/AdmUserUpdate.jsx";
 import AdmProductUpdate from "./pages/admin/adm-product/AdmProductUpdate.jsx";
 import ProductDetail from "./pages/product/ProductDetail.jsx";
 import Cart from "./pages/me/Cart.jsx";
-import Address from "./pages/me/Address.jsx";
+import Address from "./pages/both/Address.jsx";
+import Profile from "./pages/both/Profile.jsx";
+import AddressPost from "./pages/both/AddressPost.jsx";
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -39,7 +40,10 @@ const router = createBrowserRouter(
       <Route path="me" element={<ProtectedMe />}>
         <Route index element={<Profile />} />
         <Route path="cart" element={<Cart />} />
-        <Route path="address" element={<Address />} />
+        <Route path="address">
+          <Route index element={<Address />} />
+          <Route path="post" element={<AddressPost />} />
+        </Route>
       </Route>
       <Route element={<AuthRedirect />}>
         <Route path="signin" element={<Signin />} />
@@ -60,6 +64,10 @@ const router = createBrowserRouter(
           <Route path="post" element={<AdmUserPost />} />
           <Route path="detail/:id" element={<AdmUserDetail />} />
           <Route path="update/:id" element={<AdmUserUpdate />} />
+        </Route>
+        <Route path="adm-address">
+          <Route index element={<Address />} />
+          <Route path="post" element={<AddressPost />} />
         </Route>
       </Route>
     </Route>
