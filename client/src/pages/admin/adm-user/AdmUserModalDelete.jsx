@@ -1,9 +1,9 @@
 import toast from "react-hot-toast";
 import { useDeleteUserMutation } from "../../../app/api/userApiSlice";
-import { CloseModalBtn, ConfirmModalDel, Modal } from "../../../components/Components";
+import { Modal } from "../../../components/Components";
 
-const AdmUserModalDelete = ({ onClose, item }) => {
-  const [deleteUser] = useDeleteUserMutation();
+const AdmUserModalDelete = ({ onClose, item, modalId }) => {
+  const [deleteUser, { isLoading }] = useDeleteUserMutation();
 
   const handleDelete = (e) => {
     e.preventDefault();
@@ -17,10 +17,16 @@ const AdmUserModalDelete = ({ onClose, item }) => {
       });
   };
   return (
-    <Modal onClick={onClose} id={item?._id}>
-      <CloseModalBtn onClose={onClose} />
+    <Modal
+      onClose={onClose}
+      itemId={item?._id}
+      modalId={modalId}
+      closeBtn={true}
+      confirmDel={true}
+      submitDel={handleDelete}
+      loadDel={isLoading}
+    >
       <div className="my-2">Delete {item?.username} apakah kamu yakin?</div>
-      <ConfirmModalDel onClose={onClose} onSubmit={handleDelete} />
     </Modal>
   );
 };

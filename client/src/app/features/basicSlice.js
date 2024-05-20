@@ -4,6 +4,7 @@ const basicSlice = createSlice({
   name: "basic",
   initialState: {
     dark: JSON.parse(localStorage.getItem(`mernEduworkDark`)) || false,
+    openAuth: false,
     openAdminMenu: false,
     openUserMenu: false,
     openNav: false,
@@ -43,6 +44,12 @@ const basicSlice = createSlice({
     setViewMode(state, action) {
       state.viewMode = action.payload;
     },
+    toggleOpenAuth(state) {
+      state.openAuth = !state.openAuth;
+    },
+    removeOpenAuth(state) {
+      state.openAuth = false;
+    },
   },
 });
 
@@ -57,6 +64,8 @@ export const {
   toggleOpenNav,
   removeOpenNav,
   setViewMode,
+  toggleOpenAuth,
+  removeOpenAuth,
 } = basicSlice.actions;
 
 export default basicSlice.reducer;

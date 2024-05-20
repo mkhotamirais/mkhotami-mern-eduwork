@@ -3,17 +3,24 @@ import Footer from "./components/Footer";
 import Header from "./components/Header";
 import { Outlet, ScrollRestoration } from "react-router-dom";
 import { Toaster } from "react-hot-toast";
-import { removeOpenAdminMenu, removeOpenNav, removeOpenUserMenu } from "./app/features/basicSlice";
+import { removeOpenAuth, removeOpenNav } from "./app/features/basicSlice";
+import { useEffect } from "react";
 
 const App = () => {
-  const { dark, openAdminMenu, openUserMenu, openNav } = useSelector((state) => state.basic);
+  const { dark, openNav, openAuth } = useSelector((state) => state.basic);
   const dispatch = useDispatch();
 
   const handleMain = () => {
-    if (openAdminMenu) dispatch(removeOpenAdminMenu());
-    if (openUserMenu) dispatch(removeOpenUserMenu());
     if (openNav) dispatch(removeOpenNav());
+    if (openAuth) dispatch(removeOpenAuth());
   };
+
+  useEffect(() => {
+    window.addEventListener("scroll", () => {
+      if (openNav) dispatch(removeOpenNav());
+      if (openAuth) dispatch(removeOpenAuth());
+    });
+  }, [dispatch, openNav, openAuth]);
 
   return (
     <div className={`${dark ? "bg-slate-800 text-white" : "text-gray-700"}`}>

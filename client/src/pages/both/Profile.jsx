@@ -5,6 +5,7 @@ import { H2 } from "../../components/Tags";
 import { useState } from "react";
 import { useSelector } from "react-redux";
 import toast from "react-hot-toast";
+import ProfileModalDelete from "./ProfileModalDelete";
 
 const Profile = () => {
   const { data = [], isLoading, isSuccess, isError, error } = useGetMeQuery();
@@ -13,11 +14,15 @@ const Profile = () => {
   const [isEditPass, setIsEditPass] = useState(false);
   const [username, setUsername] = useState(data?.username);
   const [email, setEmail] = useState(data?.email);
-  const [role, setRole] = useState(data?.role == "admin" && data?.role);
+  const [role, setRole] = useState(data?.role);
   const [password, setPassword] = useState("");
   const [confPassword, setConfPassword] = useState("");
-
+  const [idModalDel, setIdModalDel] = useState(null);
   const [updateMe] = useUpdateMeMutation();
+
+  const onClose = () => {
+    setIdModalDel(null);
+  };
 
   const handleUpdateMe = () => {
     let result = { username, email, role };
@@ -99,9 +104,9 @@ const Profile = () => {
           </tr>
           {isEdit && (
             <tr>
-              <td>
+              <td colSpan={2}>
                 <button onClick={() => setIsEditPass((prev) => !prev)} href="#" className="underline">
-                  {isEditPass ? "Hide" : "Edit"} password
+                  {isEditPass ? "Hide" : "Edit"} Password
                 </button>
               </td>
             </tr>
@@ -144,6 +149,7 @@ const Profile = () => {
       </table>
     );
   }
+
   return (
     <div className="md:mx-10 lg:mx-24">
       <H2>Profile</H2>
@@ -163,7 +169,13 @@ const Profile = () => {
             <button onClick={() => setIsEdit(true)} className="bg-cyan-500 text-white hover:opacity-70 px-3 rounded-lg">
               Update
             </button>
-            <button className="bg-red-500 text-white hover:opacity-70 px-3 rounded-lg">Delete</button>
+            <button
+              onClick={() => setIdModalDel(data?._id)}
+              className="bg-red-500 text-white hover:opacity-70 px-3 rounded-lg"
+            >
+              Delete
+            </button>
+            <ProfileModalDelete onClose={onClose} item={data} modalId={idModalDel} />
           </div>
         )}
       </div>

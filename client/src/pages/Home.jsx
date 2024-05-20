@@ -1,5 +1,17 @@
+import { useGetMeQuery } from "../app/api/authApiSlice";
+import { Section } from "../components/Tags";
+
 const Home = () => {
-  return <div>Home</div>;
+  const { data } = useGetMeQuery();
+
+  return (
+    <Section>
+      Home{" "}
+      <i>
+        <b>{data && data?.username}</b>
+      </i>
+    </Section>
+  );
 };
 
 export default Home;

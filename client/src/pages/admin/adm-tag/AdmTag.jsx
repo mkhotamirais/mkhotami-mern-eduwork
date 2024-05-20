@@ -1,20 +1,21 @@
 import { useState } from "react";
 import { H2 } from "../../../components/Tags";
-import { CloseModalBtn, ConfirmModalDel, Err, Loading, Modal } from "../../../components/Components";
+import { Err, Loading, Modal } from "../../../components/Components";
 import toast from "react-hot-toast";
 import { FaCheck, FaPenToSquare, FaTrashCan, FaXmark } from "react-icons/fa6";
 import AdmTagPost from "./AdmTagPost";
 import { useDeleteTagMutation, useGetTagsQuery, useUpdateTagMutation } from "../../../app/api/tagApiSlice";
+import { useDispatch, useSelector } from "react-redux";
+import { setEditTag } from "../../../app/features/editSlice";
 
 const AdmTag = () => {
   const { data, isLoading, isSuccess, isError, error } = useGetTagsQuery();
-  const [isEdit, setIsEdit] = useState(null);
 
   let content;
   if (isLoading) content = <Loading />;
   else if (isError) content = <Err>{error}</Err>;
   else if (isSuccess) {
-    content = data.map((item) => <TagItem key={item?._id} item={item} isEdit={isEdit} setIsEdit={setIsEdit} />);
+    content = data.map((item) => <TagItem key={item?._id} item={item} />);
   }
 
   return (
@@ -27,13 +28,15 @@ const AdmTag = () => {
 };
 export default AdmTag;
 
-const TagItem = ({ item, isEdit, setIsEdit }) => {
-  const [openModalDelete, setOpenModalDelete] = useState(null);
+const TagItem = ({ item }) => {
+  const [idModalDel, setIdModalDel] = useState(null);
   const [name, setName] = useState(item?.name);
   const [updateTag] = useUpdateTagMutation();
+  const dispatch = useDispatch();
+  const { editTag } = useSelector((state) => state.edit);
 
   const onClose = () => {
-    setOpenModalDelete(null);
+    setIdModalDel(null);
   };
 
   const handleEdit = (e) => {
@@ -42,7 +45,7 @@ const TagItem = ({ item, isEdit, setIsEdit }) => {
       .unwrap()
       .then((res) => {
         toast.success(res.message);
-        setIsEdit(null);
+        dispatch(setEditTag(null));
       })
       .catch((err) => {
         toast.error(err.data.message);
@@ -50,22 +53,29 @@ const TagItem = ({ item, isEdit, setIsEdit }) => {
   };
 
   const handleCancelEdit = () => {
-    setIsEdit(null);
+    dispatch(setEditTag(null));
     setName(item?.name);
   };
 
   return (
-    <div className="flex justify-between border rounded p-2">
-      {isEdit === item?._id ? (
-        <form onSubmit={handleEdit}>
-          <input autoFocus="on" value={name} onChange={(e) => setName(e.target.value)} className="focus:outline-none" />
+    <div className="flex justify-between border rounded p-2 gap-2">
+      {editTag === item?._id ? (
+        <form onSubmit={handleEdit} className="w-full">
+          <input
+            autoFocus="on"
+            value={name}
+            onChange={(e) => setName(e.target.value)}
+            className="focus:outline-none w-full"
+          />
           <button type="submit" title="edit" />
         </form>
       ) : (
-        <div onClick={() => setIsEdit(item?._id)}>{item?.name}</div>
+        <div onClick={() => dispatch(setEditTag(item?._id))} className="hover:cursor-text w-full">
+          {item?.name}
+        </div>
       )}
       <div className="flex items-center gap-4">
-        {isEdit === item?._id ? (
+        {editTag === item?._id ? (
           <>
             <button onClick={handleEdit}>
               <FaCheck className="text-green-600" />
@@ -76,23 +86,23 @@ const TagItem = ({ item, isEdit, setIsEdit }) => {
           </>
         ) : (
           <>
-            <button onClick={() => setIsEdit(item?._id)}>
+            <button onClick={() => dispatch(setEditTag(item?._id))}>
               <FaPenToSquare className="text-green-600" />
             </button>
-            <button onClick={() => setOpenModalDelete(item?._id)}>
+            <button onClick={() => setIdModalDel(item?._id)}>
               <FaTrashCan className="text-red-600" />
             </button>
           </>
         )}
-        {openModalDelete === item?._id && <TagModalDelete item={item} onClose={onClose} />}
+        <TagModalDelete item={item} onClose={onClose} idModalDel={idModalDel} />
       </div>
     </div>
   );
 };
 TagItem.propTypes;
 
-const TagModalDelete = ({ onClose, item }) => {
-  const [deleteTag] = useDeleteTagMutation();
+const TagModalDelete = ({ onClose, item, idModalDel }) => {
+  const [deleteTag, { isLoading }] = useDeleteTagMutation();
   const handleDelete = (e) => {
     e.preventDefault();
     deleteTag(item?._id)
@@ -104,12 +114,20 @@ const TagModalDelete = ({ onClose, item }) => {
         toast.error(err.data.message);
       });
   };
+
   return (
-    <Modal onClick={onClose} id={item?._id}>
-      <CloseModalBtn onClose={onClose} />
+    <Modal
+      onClose={onClose}
+      itemId={item?._id}
+      modalId={idModalDel}
+      closeBtn={true}
+      confirmDel={true}
+      submitDel={handleDelete}
+      loadDel={isLoading}
+    >
       <div className="my-2">Delete {item?.name}, apakah kamu yakin</div>
-      <ConfirmModalDel onSubmit={handleDelete} onClose={onClose} />
     </Modal>
   );
 };
+
 TagModalDelete.propTypes;

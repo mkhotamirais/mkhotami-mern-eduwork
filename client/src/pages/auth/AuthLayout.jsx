@@ -6,11 +6,7 @@ import { PiSpinner } from "react-icons/pi";
 const AuthLayout = ({ children, onSubmit, title, isLoading }) => {
   const { dark } = useSelector((state) => state.basic);
   return (
-    <div
-      className={`z-50 ${
-        dark ? "bg-slate-700" : "bg-slate-100"
-      } fixed top-0 left-0 right-0 bottom-0 flex items-center justify-center`}
-    >
+    <div className={`z-50 ${dark ? "" : ""} mt-5 flex items-center justify-center`}>
       <div className={`${dark ? "bg-slate-800" : "bg-white"} border rounded-lg mx-3 p-4 w-full sm:w-2/3 md:w-1/2 lg:w-1/3`}>
         <Title>{title}</Title>
         <form onSubmit={onSubmit}>

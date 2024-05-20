@@ -5,12 +5,12 @@ import AdmUserModalDelete from "./AdmUserModalDelete";
 import AdmUserModalView from "./AdmUserModalView";
 
 const AdmUserTable = ({ item, i }) => {
-  const [showModalDelete, setShowModalDelete] = useState(null);
-  const [showModalView, setShowModalView] = useState(null);
+  const [idModalDel, setIdModalDel] = useState(null);
+  const [idModalView, setIdModalView] = useState(null);
 
   const onClose = () => {
-    if (showModalDelete) setShowModalDelete(null);
-    if (showModalView) setShowModalView(null);
+    if (idModalDel) setIdModalDel(null);
+    if (idModalView) setIdModalView(null);
   };
 
   return (
@@ -22,13 +22,9 @@ const AdmUserTable = ({ item, i }) => {
       <td className="hidden lg:table-cell">{moment(item?.createdAt).fromNow()}</td>
       <td className="hidden xl:table-cell">{moment(item?.updatedAt).fromNow()}</td>
       <td>
-        <Actions
-          modalDelete={() => setShowModalDelete(item?._id)}
-          modalView={() => setShowModalView(item?._id)}
-          id={item?._id}
-        />
-        {showModalDelete === item?._id && <AdmUserModalDelete onClose={onClose} item={item} />}
-        {showModalView === item?._id && <AdmUserModalView onClose={onClose} item={item} />}
+        <Actions modalDelete={() => setIdModalDel(item?._id)} modalView={() => setIdModalView(item?._id)} id={item?._id} />
+        <AdmUserModalDelete onClose={onClose} item={item} modalId={idModalDel} />
+        <AdmUserModalView onClose={onClose} item={item} modalId={idModalView} />
       </td>
     </tr>
   );

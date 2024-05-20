@@ -4,16 +4,13 @@ import { useGetCategoriesQuery } from "../../../app/api/categoryApiSlice";
 import { useGetTagsQuery } from "../../../app/api/tagApiSlice";
 import { useGetProductByIdQuery, useUpdateProductMutation } from "../../../app/api/productApiSlice";
 import toast from "react-hot-toast";
-import { Select } from "antd";
-import { useSelector } from "react-redux";
+import { Select } from "../../../components/Tags";
 import { useNavigate, useParams } from "react-router-dom";
 import { PreviewImg } from "../../../components/Components";
 
 const AdmProductUpdate = () => {
   const { id } = useParams();
   const { data: product } = useGetProductByIdQuery(id);
-
-  const { dark } = useSelector((state) => state.basic);
   const [name, setName] = useState("");
   const [price, setPrice] = useState("");
   const [description, setDescription] = useState("");
@@ -43,6 +40,12 @@ const AdmProductUpdate = () => {
     const files = e.target.files[0];
     setImage(files);
     setPreview(URL.createObjectURL(files));
+  };
+
+  const handleChangeTag = (e) => {
+    setTag((prev) =>
+      prev.includes(e.target.value) ? prev.filter((item) => item !== e.target.value) : [...prev, e.target.value]
+    );
   };
 
   const { data: categories } = useGetCategoriesQuery();
@@ -90,26 +93,25 @@ const AdmProductUpdate = () => {
         <div className="flex flex-col sm:flex-row sm:gap-2">
           <div className="flex-1">
             <Label id="category">category</Label>
-            <Select
-              size={"large"}
-              value={category}
-              placeholder="Select Category"
-              onChange={(value) => setCategory(value)}
-              className={`${dark ? "bg-slate-800" : "bg-white"} w-full`}
-              options={categories?.map((item) => ({ value: item?._id, label: item?.name }))}
-            />
+            <Select value={category} id="category" onChange={(e) => setCategory(e.target.value)}>
+              <option value="">Category</option>
+              {categories?.map((item) => (
+                <option key={item?._id} value={item?._id}>
+                  {item?.name}
+                </option>
+              ))}
+            </Select>
           </div>
           <div className="flex-1">
             <Label id="tag">tag</Label>
-            <Select
-              mode="multiple"
-              size={"large"}
-              value={tag}
-              placeholder="Select Tags"
-              onChange={(value) => setTag(value)}
-              className={`${dark ? "bg-slate-800" : "bg-white"} w-full`}
-              options={tags?.map((item) => ({ value: item?._id, label: item?.name }))}
-            />
+            <div className="flex gap-2 border rounded p-2 flex-wrap">
+              {tags?.map((item) => (
+                <div key={item?._id} className="flex items-center capitalize gap-2">
+                  <input type="checkbox" name="tag" value={item?._id} onChange={handleChangeTag} />
+                  {item?.name}
+                </div>
+              ))}
+            </div>
           </div>
         </div>
         <Label id="description">description</Label>

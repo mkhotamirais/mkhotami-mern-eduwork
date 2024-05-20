@@ -1,11 +1,23 @@
 import { Badge, Modal } from "../../../components/Components";
 import moment from "moment";
-import { Figure } from "../../../components/Tags";
 
-const AdmProductModalView = ({ item, onClose }) => {
+const AdmProductModalView = ({ item, modalId, onClose }) => {
   return (
-    <Modal id={item?._id} onClick={onClose} className={"flex flex-col gap-2"}>
-      <Figure src={item.imageUrl} alt={item.imageName || "no image"} height="h-64 sm:h-72" />
+    <Modal
+      onClose={onClose}
+      item={item}
+      itemId={item?._id}
+      modalId={modalId}
+      closeBtn={true}
+      className={"flex flex-col gap-2"}
+    >
+      <figure className={`flex-1 border flex rounded overflow-hidden`}>
+        <img
+          src={item?.imageUrl}
+          alt={item?.imageName || "no image"}
+          className="h-full w-full object-cover flex-grow object-center"
+        />
+      </figure>
       <div className="capitalize font-medium text-base sm:text-lg">{item?.name}</div>
       <div className="text-lg sm:text-2xl">Rp{item?.price?.toLocaleString("id-ID")}</div>
       <div>{item?.description}</div>

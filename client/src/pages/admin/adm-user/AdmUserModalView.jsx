@@ -1,10 +1,9 @@
 import moment from "moment";
-import { CloseModalBtn, Modal } from "../../../components/Components";
+import { Modal } from "../../../components/Components";
 
-const AdmUserModalView = ({ onClose, item }) => {
+const AdmUserModalView = ({ onClose, item, modalId }) => {
   return (
-    <Modal onClick={onClose} id={item?._id}>
-      <CloseModalBtn onClose={onClose} />
+    <Modal onClose={onClose} item={item} itemId={item?._id} modalId={modalId} closeBtn={true}>
       <div>
         <div>Username : {item?.username}</div>
         <div>Email : {item?.email}</div>

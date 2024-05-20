@@ -4,9 +4,7 @@ import { useSelector } from "react-redux";
 import ProductCard from "./ProductCard";
 import ProductTable from "./ProductTable";
 import { Section } from "../../components/Tags";
-import ProductQuerySearch from "./ProductQuerySearch";
-import ProductQueryTag from "./ProductQueryTag";
-import ProductQueryCategory from "./ProductQueryCategory";
+import { QueryCategory, QuerySearch, QueryTag } from "./ProductQuery";
 
 const Product = () => {
   const { queryResult } = useSelector((state) => state.product);
@@ -46,11 +44,11 @@ const Product = () => {
   return (
     <Section>
       <div className="flex flex-col">
-        <div className="flex items-center justify-between gap-2">
-          <ProductQuerySearch />
-          <ProductQueryCategory />
+        <div className="flex justify-between gap-2">
+          <QuerySearch />
+          <QueryCategory />
         </div>
-        <ProductQueryTag />
+        <QueryTag />
       </div>
       {content}
     </Section>

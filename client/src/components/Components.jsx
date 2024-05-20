@@ -5,36 +5,26 @@ import { H2 } from "./Tags";
 import { Link } from "react-router-dom";
 import { usePath } from "./Hooks";
 
-export const Logo = ({ className }) => {
-  return (
-    <a href="/" className={`${className} flex flex-col gap-1`}>
-      <div className="leading-none text-xl font-medium">Mkhotami</div>
-      <div className="leading-none text-sm">Mern Eduwork</div>
-    </a>
-  );
-};
-Logo.propTypes;
-
-export const Modal = ({ children = "Modal", id, onClick, className }) => {
-  const { dark } = useSelector((state) => state.basic);
-  return (
-    <div
-      onClick={onClick}
-      className={`z-50 fixed top-0 left-0 right-0 bottom-0 bg-black bg-opacity-40 flex items-center justify-center`}
-    >
-      <div
-        onClick={(e) => e.stopPropagation()}
-        className={`relative ${className} ${
-          dark ? "bg-slate-800" : "bg-white"
-        } p-5 mx-3 w-full sm:w-2/3 md:w-1/2 lg:w-1/3 shadow rounded-lg`}
-      >
-        <div className="mr-5 text-sm">ID: {id}</div>
-        {children}
-      </div>
-    </div>
-  );
-};
-Modal.propTypes;
+// export const Modal = ({ children = "Modal", id, onClick, className }) => {
+//   const { dark } = useSelector((state) => state.basic);
+//   return (
+//     <div
+//       onClick={onClick}
+//       className={`z-50 fixed top-0 left-0 right-0 bottom-0 bg-black bg-opacity-40 flex items-center justify-center`}
+//     >
+//       <div
+//         onClick={(e) => e.stopPropagation()}
+//         className={`relative ${className} ${
+//           dark ? "bg-slate-800" : "bg-white"
+//         } p-5 mx-3 w-full sm:w-2/3 md:w-1/2 lg:w-1/3 shadow rounded-lg`}
+//       >
+//         <div className="mr-5 text-sm">ID: {id}</div>
+//         {children}
+//       </div>
+//     </div>
+//   );
+// };
+// Modal.propTypes;
 
 export const ConfirmModalDel = ({ onSubmit, onClose }) => {
   return (
@@ -102,7 +92,7 @@ Err.propTypes;
 
 export const GridCard = ({ children, className }) => {
   return (
-    <div className={`${className} grid gap-1 sm:gap-2 grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5`}>
+    <div className={`${className} grid gap-1 sm:gap-2 grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5`}>
       {children}
     </div>
   );
@@ -137,7 +127,7 @@ export const Badge = ({ children = "Badge", onClick, className = "bg-gray-500 te
 Badge.propTypes;
 
 export const Breadcrumb = ({ className }) => {
-  const [path] = usePath();
+  const path = usePath();
   path[0] = "home";
 
   return (
@@ -148,14 +138,14 @@ export const Breadcrumb = ({ className }) => {
           <Next />
         </div>
         <div className="flex">
-          {path.map((item, i) => {
+          {path?.map((item, i) => {
             let to;
             if (i === 0) to = "..";
             else if (item === "detail" || item === "update") to = "#";
             else to = "/" + location.pathname.split("/").splice(1, path.indexOf(item)).join("/");
             return (
-              <Link to={to} key={i} className="">
-                <div className="inline px-1 hover:text-cyan-500 hover:underline">{item}</div>
+              <Link to={to} key={i} className="min-w-max">
+                <div className="inline px-1 hover:text-cyan-500 hover:underline">{item.split("-").join(" ")}</div>
                 {i < path.length - 1 && "/"}
               </Link>
             );
@@ -181,3 +171,61 @@ export const PreviewImg = ({ onRemovePreview, preview }) => {
   );
 };
 PreviewImg.propTypes;
+
+export const Modal = ({ children, onClose, itemId, modalId, closeBtn = false, confirmDel = false, submitDel, loadDel }) => {
+  const { dark } = useSelector((state) => state.basic);
+  return (
+    <div
+      onClick={onClose}
+      className={`${
+        modalId === itemId ? "z-50 bg-black bg-opacity-40" : "-z-10"
+      } fixed inset-0 flex items-center justify-center transition-all duration-150`}
+    >
+      <div
+        onClick={(e) => e.stopPropagation()}
+        className={`${dark ? "bg-slate-900" : "bg-white"} ${
+          modalId === itemId ? "scale-100" : "scale-0"
+        } origin-top w-full sm:w-3/4 md:w-1/2 xl:w-1/3 mx-3 border rounded-lg p-4 relative transition-all duration-150`}
+      >
+        {closeBtn && (
+          <>
+            <div className="mr-8">ID: {itemId}</div>
+            <button
+              onClick={onClose}
+              className="absolute top-3 right-3 text-xl hover:text-red-500 transition-all duration-200"
+            >
+              <FaXmark />
+            </button>
+          </>
+        )}
+        {children}
+        {confirmDel && (
+          <form onSubmit={submitDel} className="relative">
+            {modalId === itemId && <input type="checkbox" autoFocus className="absolute -z-50 opacity-0" />}
+            <div className="flex gap-2">
+              <button
+                type="submit"
+                className="bg-red-500 text-white p-1 w-16 rounded hover:opacity-70 flex items-center justify-center"
+              >
+                {loadDel ? <PiSpinner className="animate-spin text-lg" /> : "Delete"}
+              </button>
+              <button type="button" onClick={onClose} className="bg-slate-500 rounded p-1 px-2 text-white hover:opacity-70">
+                Cancel
+              </button>
+            </div>
+          </form>
+        )}
+      </div>
+    </div>
+  );
+};
+Modal.propTypes;
+
+export const LoadingModal = ({ className }) => (
+  <div className={`${className} z-50 fixed inset-0 flex justify-center items-center`}>
+    <div className="bg-black bg-opacity-10 p-1 shadow-xl rounded-full text-white text-5xl">
+      <PiSpinner className="animate-spin" />
+    </div>
+  </div>
+);
+LoadingModal.propTypes;
