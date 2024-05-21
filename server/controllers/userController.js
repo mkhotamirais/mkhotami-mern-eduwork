@@ -1,5 +1,7 @@
 const { err, ok, hashPass } = require("../helper/utils");
 const User = require("../models/userModel");
+const Address = require("../models/addressModel");
+const Cart = require("../models/cartModel");
 const validator = require("validator");
 
 const getUsers = async (req, res) => {
@@ -69,6 +71,8 @@ const deleteUser = async (req, res) => {
     const match = await User.findById(id);
     if (!match) return err(res, 404, `data dengan id ${id} tidak ditemukan`);
     await User.findByIdAndDelete(id);
+    await Address.deleteMany({ user: match?._id });
+    await Cart.deleteMany({ user: match?._id });
     ok(res, 200, `delete ${match?.username} success`);
   } catch (error) {
     err(res, 400, error);

@@ -1,5 +1,4 @@
 const { ok, err } = require("../helper/utils");
-const userModel = require("../models/userModel");
 const User = require("../models/userModel");
 const Address = require("../models/addressModel");
 
@@ -26,7 +25,10 @@ const getAddresses = async (req, res) => {
 
 const getAddressById = async (req, res) => {
   try {
-    const data = "ahmad";
+    const { id } = req.params;
+    const data = await Address.findById(id).populate({ path: "user", select: ["username"] });
+
+    if (!data) return err(res, 404, `address id not found`);
     ok(res, 200, `getAddressById`, data);
   } catch (error) {
     err(res, 400, error);

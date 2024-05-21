@@ -6,9 +6,9 @@ import { Badge } from "../../components/Components";
 import ProductAddToCart from "./ProductAddToCart";
 
 const ProductCard = ({ item }) => {
-  const [openModelView, setOpenModelView] = useState(null);
+  const [idModalView, setIdModalView] = useState(null);
   const onClose = () => {
-    if (openModelView) setOpenModelView(null);
+    if (idModalView) setIdModalView(null);
   };
 
   return (
@@ -36,7 +36,7 @@ const ProductCard = ({ item }) => {
       </div>
       <div className="flex justify-between items-center p-1">
         <div className="flex gap-4">
-          <button onClick={() => setOpenModelView(item?._id)}>
+          <button onClick={() => setIdModalView(item?._id)}>
             <FaEye className="text-green-500" />
           </button>
           <Link to={`detail/${item?._id}`}>
@@ -44,7 +44,7 @@ const ProductCard = ({ item }) => {
           </Link>
         </div>
         <ProductAddToCart item={item} />
-        {openModelView === item?._id && <ProductModalView onClose={onClose} item={item} />}
+        <ProductModalView onClose={onClose} item={item} modalId={idModalView} />
       </div>
     </div>
   );

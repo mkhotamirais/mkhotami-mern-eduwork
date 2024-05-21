@@ -2,6 +2,7 @@ const { getCarts, updateCart } = require("../controllers/cartController");
 const { verifyToken } = require("../helper/middleware");
 const router = require("express").Router();
 
-router.route("/").get(verifyToken, getCarts).patch(verifyToken, updateCart);
+router.use(verifyToken);
+router.route("/").get(getCarts).patch(updateCart);
 
 module.exports = router;

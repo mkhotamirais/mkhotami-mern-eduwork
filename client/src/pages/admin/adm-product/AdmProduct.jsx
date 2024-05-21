@@ -1,4 +1,3 @@
-import { useEffect } from "react";
 import { useGetProductsQuery } from "../../../app/api/productApiSlice";
 import { Err, GridCard, Loading } from "../../../components/Components";
 import { H2 } from "../../../components/Tags";
@@ -9,17 +8,9 @@ import { FaPlus } from "react-icons/fa6";
 const AdmProduct = () => {
   const { data = [], isLoading, isSuccess, isError, error } = useGetProductsQuery();
 
-  useEffect(() => {
-    console.log(data);
-  }, [data]);
-
-  useEffect(() => {
-    console.log(error);
-  }, [error]);
-
   let content;
   if (isLoading) content = <Loading />;
-  else if (isError) content = <Err>hr</Err>;
+  else if (isError) content = <Err>{error}</Err>;
   else if (isSuccess) {
     const renderedProduct = data.map((item) => <AdmProductCard key={item?._id} item={item} />);
     content = <GridCard>{renderedProduct}</GridCard>;

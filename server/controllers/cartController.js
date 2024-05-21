@@ -49,8 +49,7 @@ const getCarts = async (req, res) => {
       data = await Cart.find({ user: req?.userData?.id })
         .sort("-createdAt")
         .populate({ path: "productId", select: ["_id", "name", "price", "imageName", "imageUrl"] });
-
-    ok(res, 200, `getCarts`, data);
+    res.status(200).json({ message: `getCarts`, data });
   } catch (error) {
     err(res, 400, error);
   }

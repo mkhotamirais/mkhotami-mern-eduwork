@@ -84,13 +84,3 @@ export const Select = ({ children, className, multiple, size, id, value, onChang
   );
 };
 Select.propTypes;
-
-export const Figure = ({ src, alt, height = "h-32 sm:h-48", className }) => {
-  const { dark } = useSelector((state) => state.basic);
-  return (
-    <figure className={`${dark ? "bg-slate-700" : "bg-slate-100"} ${className} ${height} rounded overflow-hidden`}>
-      <img src={src} alt={alt} className="h-full w-full object-contain object-center" />
-    </figure>
-  );
-};
-Figure.propTypes;

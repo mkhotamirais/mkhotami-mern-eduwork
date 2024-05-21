@@ -5,6 +5,11 @@ export const addressApiSlice = apiSlice.injectEndpoints({
     getAddresses: builder.query({
       query: () => `/address`,
       transformResponse: (res) => res.data,
+      providesTags: ["Address", "User"],
+    }),
+    getAddressById: builder.query({
+      query: (id) => `/address/${id}`,
+      transformResponse: (res) => res.data,
       providesTags: ["Address"],
     }),
     postAddress: builder.mutation({
@@ -17,10 +22,15 @@ export const addressApiSlice = apiSlice.injectEndpoints({
     }),
     deleteAddress: builder.mutation({
       query: (id) => ({ url: `/address/${id}`, method: "DELETE" }),
-      invalidatesTags: ["Address"],
+      invalidatesTags: ["Address", "User"],
     }),
   }),
 });
 
-export const { useGetAddressesQuery, usePostAddressMutation, useUpdateAddressMutation, useDeleteAddressMutation } =
-  addressApiSlice;
+export const {
+  useGetAddressesQuery,
+  useGetAddressByIdQuery,
+  usePostAddressMutation,
+  useUpdateAddressMutation,
+  useDeleteAddressMutation,
+} = addressApiSlice;

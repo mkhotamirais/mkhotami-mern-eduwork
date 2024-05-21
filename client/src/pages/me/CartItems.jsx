@@ -1,5 +1,4 @@
 import { FaMinus, FaPlus, FaTrashCan } from "react-icons/fa6";
-import { Figure } from "../../components/Tags";
 import { useUpdateCartsMutation } from "../../app/api/cartApiSlice";
 import { useState } from "react";
 
@@ -29,8 +28,10 @@ const CartItems = ({ item, changeQtyId, setChangeQtyId }) => {
 
   return (
     <tr key={item?._id} className="*:border *:p-2 *:text-left *:rounded">
-      <td>
-        <Figure src={item?.productId?.imageUrl} alt={item?.productId?.imageName || "no image"} height="h-12" />
+      <td className="hidden sm:table-cell">
+        <figure className={`h-12 rounded overflow-hidden`}>
+          <img src={item?.productId?.imageUrl} alt={"image cart"} className="h-full w-full object-contain object-center" />
+        </figure>
       </td>
       <td>{item?.productId?.name}</td>
       <td>
@@ -52,7 +53,7 @@ const CartItems = ({ item, changeQtyId, setChangeQtyId }) => {
                 type="number"
                 value={newQty}
                 onChange={(e) => setNewQty(e.target.value)}
-                className="border-b w-10 appearance-none"
+                className="border-b w-9 appearance-none bg-inherit"
                 autoFocus
               />
               <button type="submit"></button>

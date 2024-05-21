@@ -28,6 +28,10 @@ import Cart from "./pages/me/Cart.jsx";
 import Address from "./pages/both/Address.jsx";
 import Profile from "./pages/both/Profile.jsx";
 import AddressPost from "./pages/both/AddressPost.jsx";
+import AddressDetail from "./pages/both/AddressDetail.jsx";
+import AddressUpdate from "./pages/both/AddressUpdate.jsx";
+import Order from "./pages/me/Order.jsx";
+import { CheckoutAddress, CheckoutConfirm, Invoice } from "./pages/me/Checkout.jsx";
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -44,6 +48,10 @@ const router = createBrowserRouter(
           <Route index element={<Address />} />
           <Route path="post" element={<AddressPost />} />
         </Route>
+        <Route path="order" element={<Order />} />
+        <Route path="checkout-address" element={<CheckoutAddress />} />
+        <Route path="checkout-confirm" element={<CheckoutConfirm />} />
+        <Route path="checkout-invoice/:id" element={<Invoice />} />
       </Route>
       <Route element={<AuthRedirect />}>
         <Route path="signin" element={<Signin />} />
@@ -68,6 +76,8 @@ const router = createBrowserRouter(
         <Route path="adm-address">
           <Route index element={<Address />} />
           <Route path="post" element={<AddressPost />} />
+          <Route path="detail/:id" element={<AddressDetail />} />
+          <Route path="update/:id" element={<AddressUpdate />} />
         </Route>
       </Route>
     </Route>

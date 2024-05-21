@@ -4,33 +4,30 @@ import AddressModalDelete from "./AddressModalDelete";
 import AddressModalView from "./AddressModalView";
 
 const AddressItems = ({ item, i }) => {
-  const [showModalDelete, setShowModalDelete] = useState(null);
-  const [showModalView, setShowModalView] = useState(null);
+  const [idModalDel, setIdModalDel] = useState(null);
+  const [idModalView, setIdModalView] = useState(null);
 
   const onClose = () => {
-    if (showModalDelete) setShowModalDelete(null);
-    if (showModalView) setShowModalView(null);
+    if (idModalDel) setIdModalDel(null);
+    if (idModalView) setIdModalView(null);
   };
 
   return (
-    <tr>
+    <tr className="*:border *:rounded *:px-1">
       <td>{i + 1}</td>
       <td className="capitalize">{item?.name}</td>
       <td>{item?.user?.username}</td>
       <td className="hidden sm:table-cell">{item?.detail}</td>
       <td className="hidden md:table-cell">
         <div>
-          Kel. {item?.kelurahan} Kec. {item?.kecamatan} Kab. {item?.kabupaten} Prov. {item?.provinsi}
+          Kel. {item?.kelurahan?.split("-")[1]} Kec. {item?.kecamatan?.split("-")[1]} Kab. {item?.kabupaten?.split("-")[1]}{" "}
+          Prov. {item?.provinsi?.split("-")[1]}
         </div>
       </td>
       <td className="w-28">
-        <Actions
-          modalDelete={() => setShowModalDelete(item?._id)}
-          modalView={() => setShowModalView(item?._id)}
-          id={item?._id}
-        />
-        {showModalDelete === item?._id && <AddressModalDelete onClose={onClose} item={item} />}
-        {showModalView === item?._id && <AddressModalView onClose={onClose} item={item} />}
+        <Actions modalDelete={() => setIdModalDel(item?._id)} modalView={() => setIdModalView(item?._id)} id={item?._id} />
+        <AddressModalDelete onClose={onClose} item={item} modalId={idModalDel} />
+        <AddressModalView onClose={onClose} item={item} modalId={idModalView} />
       </td>
     </tr>
   );

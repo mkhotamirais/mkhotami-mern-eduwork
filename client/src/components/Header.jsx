@@ -11,9 +11,11 @@ import {
   FaAddressBook,
   FaBars,
   FaCartShopping,
+  FaFileInvoice,
   FaGithub,
   FaList,
   FaMoon,
+  FaRightFromBracket,
   FaRightToBracket,
   FaSun,
   FaTags,
@@ -48,6 +50,7 @@ const adminMenus = [
 const userMenus = [
   { href: "/me", text: "profile", icon: <FaUserGear /> },
   { href: "/me/address", text: "address", icon: <FaAddressBook /> },
+  { href: "/me/order", text: "order", icon: <FaFileInvoice /> },
 ];
 
 const guestMenus = [
@@ -147,7 +150,12 @@ const AuthLogout = () => {
       });
   };
   return (
-    <a onClick={handleClick} href="/signin" className="bg-slate-500 block mt-2 text-white rounded px-3 p-1 hover:opacity-70">
+    <a
+      onClick={handleClick}
+      href="/signin"
+      className="bg-slate-500 mt-2 text-white rounded px-3 p-1 flex items-center gap-1 hover:opacity-70"
+    >
+      <FaRightFromBracket />
       logout
     </a>
   );

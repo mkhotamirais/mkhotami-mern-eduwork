@@ -1,18 +1,21 @@
 import { useEffect, useState } from "react";
 import { Input, Label, Select, Textarea } from "../../components/Tags";
-import { usePostAddressMutation } from "../../app/api/addressApiSlice";
+import { useGetAddressByIdQuery, useUpdateAddressMutation } from "../../app/api/addressApiSlice";
 import toast from "react-hot-toast";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 
-const AddressPost = () => {
+const AddressUpdate = () => {
+  const { id } = useParams();
+  const { data } = useGetAddressByIdQuery(id);
+
+  const [provId, setProvId] = useState(12);
+  const [kabId, setKabId] = useState("");
+  const [kecId, setKecId] = useState("");
+
   const [provList, setProvList] = useState([]);
   const [kabList, setKabList] = useState([]);
   const [kecList, setKecList] = useState([]);
   const [kelList, setKelList] = useState([]);
-
-  const [provId, setProvId] = useState("");
-  const [kabId, setKabId] = useState("");
-  const [kecId, setKecId] = useState("");
 
   const [name, setName] = useState("");
   const [provinsi, setProvinsi] = useState("");
@@ -21,6 +24,24 @@ const AddressPost = () => {
   const [kelurahan, setKelurahan] = useState("");
   const [detail, setDetail] = useState("");
   const navigate = useNavigate();
+
+  useEffect(() => {
+    if (data) {
+      setProvId(data?.provinsi?.split("-")[0]);
+      setKabId(data?.kabupaten?.split("-")[0]);
+      setKecId(data?.kecamatan?.split("-")[0]);
+    }
+  }, [data]);
+  useEffect(() => {
+    if (data) {
+      setName(data?.name);
+      setDetail(data?.detail);
+      setProvinsi(data?.provinsi);
+      setKabupaten(data?.kabupaten);
+      setKecamatan(data?.kecamatan);
+      setKelurahan(data?.kelurahan);
+    }
+  }, [data]);
 
   useEffect(() => {
     fetch(`https://www.emsifa.com/api-wilayah-indonesia/api/provinces.json`)
@@ -72,12 +93,12 @@ const AddressPost = () => {
     setKelurahan(e.target.value);
   };
 
-  const [postAddress] = usePostAddressMutation();
+  const [updateAddress] = useUpdateAddressMutation();
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    const data = { name, provinsi, kabupaten, kecamatan, kelurahan, detail };
-    postAddress(data)
+    const data = { id, name, provinsi, kabupaten, kecamatan, kelurahan, detail };
+    updateAddress(data)
       .unwrap()
       .then((res) => {
         toast.success(res.message);
@@ -90,12 +111,12 @@ const AddressPost = () => {
 
   return (
     <div>
-      <div>Post Address</div>
+      <div>Update Address</div>
       <form onSubmit={handleSubmit}>
         <Label id="name">name</Label>
-        <Input id="name" autoFocus={true} onChange={(e) => setName(e.target.value)} />
+        <Input id="name" autoFocus={true} value={name} onChange={(e) => setName(e.target.value)} />
         <Label id="provinsi">provinsi</Label>
-        <Select id="provinsi" onChange={handleChangeProvinsi}>
+        <Select id="provinsi" value={provinsi} onChange={handleChangeProvinsi}>
           <option value="">select provinsi</option>
           {provList.map((item) => (
             <option key={item?.id} value={`${item.id}-${item.name}`}>
@@ -104,7 +125,7 @@ const AddressPost = () => {
           ))}
         </Select>
         <Label id="kabupaten">kabupaten</Label>
-        <Select id="kabupaten" onChange={handleChangeKabupaten}>
+        <Select id="kabupaten" value={kabupaten} onChange={handleChangeKabupaten}>
           <option value="">select kabupaten</option>
           {kabList.map((item) => (
             <option key={item?.id} value={`${item.id}-${item.name}`}>
@@ -113,7 +134,7 @@ const AddressPost = () => {
           ))}
         </Select>
         <Label id="kecamatan">kecamatan</Label>
-        <Select id="kecamatan" onChange={handleChangeKecamatan}>
+        <Select id="kecamatan" value={kecamatan} onChange={handleChangeKecamatan}>
           <option value="">select kecamatan</option>
           {kecList.map((item) => (
             <option key={item?.id} value={`${item.id}-${item.name}`}>
@@ -122,7 +143,7 @@ const AddressPost = () => {
           ))}
         </Select>
         <Label id="kelurahan">kelurahan</Label>
-        <Select id="kelurahan" onChange={handleChangeKelurahan}>
+        <Select id="kelurahan" value={kelurahan} onChange={handleChangeKelurahan}>
           <option value="">select kelurahan</option>
           {kelList.map((item) => (
             <option key={item?.id} value={`${item.id}-${item.name}`}>
@@ -131,7 +152,7 @@ const AddressPost = () => {
           ))}
         </Select>
         <Label id="detail">detail</Label>
-        <Textarea id="detail" onChange={(e) => setDetail(e.target.value)} />
+        <Textarea id="detail" value={detail} onChange={(e) => setDetail(e.target.value)} />
         <button type="submit" className="bg-cyan-500 p-2 px-3 rounded text-white hover:opacity-70">
           Submit
         </button>
@@ -140,4 +161,4 @@ const AddressPost = () => {
   );
 };
 
-export default AddressPost;
+export default AddressUpdate;

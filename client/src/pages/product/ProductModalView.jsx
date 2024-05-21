@@ -1,24 +1,31 @@
 import moment from "moment";
-import { Badge, CloseModalBtn, Modal } from "../../components/Components";
+import { Badge, Modal } from "../../components/Components";
 
-const ProductModalView = ({ onClose, item }) => {
+const ProductModalView = ({ onClose, item, modalId }) => {
   return (
-    <Modal onClick={onClose} id={item?._id}>
-      <CloseModalBtn onClose={onClose} />
+    <Modal onClose={onClose} itemId={item?._id} modalId={modalId} closeBtn={true}>
       <div>
-        <figure className={`flex-1 border flex rounded overflow-hidden`}>
+        <figure className={`flex-1 h-64 border flex rounded overflow-hidden`}>
           <img
             src={item?.imageUrl}
             alt={item?.imageName || "no image"}
             className="h-full w-full object-cover flex-grow object-center"
           />
         </figure>{" "}
-        <div>{item?.name}</div>
-        <div>Rp{item?.price?.toLocaleString("id-ID")}</div>
-        <div>{item?.description}</div>
-        <div>Category : {item?.category?.name}</div>
         <div>
-          <span>Tags : </span>
+          <b>Name</b> : {item?.name}
+        </div>
+        <div>
+          <b>Price</b> : Rp{item?.price?.toLocaleString("id-ID")}
+        </div>
+        <div>
+          <b>Description</b> : {item?.description}
+        </div>
+        <div>
+          <b>Category</b> : {item?.category?.name}
+        </div>
+        <div>
+          <b>Tags</b> :{" "}
           <div className="inline-flex gap-1">
             {item?.tags.map((tag) => (
               <Badge key={tag?._id}>{tag?.name}</Badge>
